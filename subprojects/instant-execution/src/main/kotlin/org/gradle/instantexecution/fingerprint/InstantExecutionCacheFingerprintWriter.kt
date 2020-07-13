@@ -70,7 +70,7 @@ class InstantExecutionCacheFingerprintWriter(
     val capturedFiles: MutableSet<File>
 
     private
-    val undeclaredSystemProperties = mutableSetOf<String>()
+    val undeclaredSystemProperties = newConcurrentHashSet<String>()
 
     private
     var closestChangingValue: InstantExecutionCacheFingerprint.ChangingDependencyResolutionValue? = null
@@ -121,8 +121,10 @@ class InstantExecutionCacheFingerprintWriter(
 
     private
     fun onChangingValue(changingValue: InstantExecutionCacheFingerprint.ChangingDependencyResolutionValue) {
-        if (closestChangingValue == null || closestChangingValue!!.expireAt > changingValue.expireAt) {
-            closestChangingValue = changingValue
+        synchronized(this) {
+            if (closestChangingValue == null || closestChangingValue!!.expireAt > changingValue.expireAt) {
+                closestChangingValue = changingValue
+            }
         }
     }
 
