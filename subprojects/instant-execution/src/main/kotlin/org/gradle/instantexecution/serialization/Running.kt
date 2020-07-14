@@ -148,7 +148,7 @@ class DefaultRecursionScope(
             val k = this.k
             val result = this.result
             if (k == null) {
-                return result.getOrThrow()  // done -- final result
+                return result.getOrThrow() // done -- final result
             }
             iteration += 1
             if (iteration > 1_000_000) {
