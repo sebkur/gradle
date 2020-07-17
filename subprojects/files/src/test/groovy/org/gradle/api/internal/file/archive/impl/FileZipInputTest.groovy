@@ -42,6 +42,9 @@ class FileZipInputTest extends Specification {
         } else {
             assert zipInput instanceof StreamZipInput
         }
+
+        cleanup:
+        zipInput?.close()
     }
 
     @Requires(TestPrecondition.JDK11_OR_LATER)
